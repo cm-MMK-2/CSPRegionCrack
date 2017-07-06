@@ -9,13 +9,17 @@
 
 using namespace std;
 
-const BYTE checkBytes[] = { 0x75, 0x11, 0x3B, 0xF3, 0x74, 0x04, 0x3B, 0xC3, 0x75 };
+BYTE* checkBytes;
 
-const BYTE replaceBytes[] = { 0xEB, 0x11, 0x3B, 0xF3, 0x74, 0x04, 0x3B, 0xC3, 0x75 };
+BYTE* replaceBytes;
 
-const BYTE checkBytes32[] = { 0x75, 0x1B, 0x3B, 0xFE, 0x74, 0x04, 0x3B, 0xC6, 0x75 };
+BYTE checkBytes64[] = { 0x75, 0x11, 0x3B, 0xF3, 0x74, 0x04, 0x3B, 0xC3, 0x75 };
 
-const BYTE replaceBytes32[] = { 0xEB, 0x1B, 0x3B, 0xFE, 0x74, 0x04, 0x3B, 0xC6, 0x75 };
+BYTE replaceBytes64[] = { 0xEB, 0x11, 0x3B, 0xF3, 0x74, 0x04, 0x3B, 0xC3, 0x75 };
+
+BYTE checkBytes32[] = { 0x75, 0x1B, 0x3B, 0xFE, 0x74, 0x04, 0x3B, 0xC6, 0x75 };
+
+BYTE replaceBytes32[] = { 0xEB, 0x1B, 0x3B, 0xFE, 0x74, 0x04, 0x3B, 0xC6, 0x75 };
 
 int GetIndexOfSubArray(const BYTE* mainArr, int mainArrSize,const BYTE* subArr, int subArrSize)
 {
@@ -52,16 +56,29 @@ void ReplaceSubArray(BYTE* mainArr, int startIndex, const BYTE* subArr, int subA
 
 /*
 Usage: 
-64bit no para
+64bit no arg
 32bit -32
 */
-int main() {
+int main(int argc, char* argv[]) {
 	ifstream ifs("CLIPStudioPaint.exe", ios::binary);
 
 	if (!ifs) {
 		wcout << "Cannot find file -- CLIPStudioPaint.exe\nPress Any key to exit..." << endl;
 		getchar();
 		return -1;
+	}
+
+	if (argc > 0 && string(argv[1]).compare("-32"))
+	{
+		checkBytes = checkBytes32;
+		replaceBytes = replaceBytes32;
+		wcout << "Search 32bit data in file <CLIPStudioPaint.exe>..." << endl;
+	}
+	else
+	{
+		checkBytes = checkBytes64;
+		replaceBytes = replaceBytes64;
+		wcout << "Search 64bit data in file <CLIPStudioPaint.exe>..." << endl;
 	}
 
 	// get length of file:
@@ -119,7 +136,7 @@ int main() {
 	delete buffer;
 
 
-	wcout << "按任意键退出..." << endl;
+	wcout << "Press any key to exit..." << endl;
 	getchar();
 	return 0;
 }
