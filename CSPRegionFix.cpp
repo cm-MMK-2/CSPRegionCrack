@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
 		ofstream ofs("CLIPStudioPaint.exe", ios::binary | ios::trunc);
 		ofs.write((char *)buffer, length);
 		ofs.close();
-		wcout << "Crack success!" << endl;
+		wcout << "Region Fix success!" << endl;
 	}
 	else
 	{
@@ -125,11 +125,11 @@ int main(int argc, char* argv[]) {
 		int matchCrackedIndex = GetIndexOfSubArray(buffer, length, replaceBytes, sizeof(replaceBytes) / sizeof(BYTE));
 		if (matchCrackedIndex > 0)
 		{
-			wcout << "The file has already been cracked!" << endl;
+			wcout << "The file has already been fixed!" << endl;
 		}
 		else
 		{
-			wcout << "Cannot find cracked data block...Crack failed..." << endl;
+			wcout << "Cannot find target data block...Fix failed..." << endl;
 		}
 	}
 
